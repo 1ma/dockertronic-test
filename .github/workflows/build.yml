@@ -17,17 +17,14 @@ jobs:
           - ["bitcoin", "1maa/bitcoind:22.0"]
           - ["mysql", "1maa/mysql:8.0"]
           - ["sqlite", "1maa/sqlite:latest"]
-    env:
-      CONTEXT: ${{ matrix.images[0] }}
-      IMAGE: ${{ matrix.images[1] }}
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/docker-setup
         with:
-          context: ${{ env.CONTEXT }}
+          context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
           docker-hub-user: ${{ secrets.DOCKER_HUB_USER }}
-          image: ${{ env.IMAGE }}
+          image: ${{ matrix.images[1] }}
 
   tier2:
     name: Build Tier 2 images
@@ -38,14 +35,11 @@ jobs:
       matrix:
         images:
           - ["sakila", "1maa/sakila:latest"]
-    env:
-      CONTEXT: ${{ matrix.images[0] }}
-      IMAGE: ${{ matrix.images[1] }}
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/docker-setup
         with:
-          context: ${{ env.CONTEXT }}
+          context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
           docker-hub-user: ${{ secrets.DOCKER_HUB_USER }}
-          image: ${{ env.IMAGE }}
+          image: ${{ matrix.images[1] }}
