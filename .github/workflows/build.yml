@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sanity-check:
+    name: Check versions and Docker Hub connectivity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Docker version
+        run: docker version
+      - name: Check Docker extended information
+        run: docker info
+      - name: Check Docker Compose version
+        run: docker-compose version
+      - name: Attempt logging into Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
