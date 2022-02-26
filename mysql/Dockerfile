@@ -8,7 +8,7 @@ COPY mysql.conf.d/* mysql.conf.d/
 RUN chmod -R 644 conf.d/* mysql.conf.d/*
 
 
-FROM mysql:8.0
+FROM mysql:oracle
 
 ENV TERM=xterm
 

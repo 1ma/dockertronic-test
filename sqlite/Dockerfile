@@ -17,7 +17,6 @@ RUN apk add --no-cache \
     readline-dev \
     readline-static \
     unzip \
-    upx \
  && unzip sqlite-amalgamation-${SQLITE_VERSION}.zip \
  && cd sqlite-amalgamation-${SQLITE_VERSION} \
  && gcc \
@@ -37,8 +36,6 @@ RUN apk add --no-cache \
     -lreadline \
     -lncursesw \
     -o /tmp/sqlite3 \
-  && file /tmp/sqlite3 \
-  && upx --lzma /tmp/sqlite3 \
   && file /tmp/sqlite3
 
 
