@@ -23,7 +23,7 @@ jobs:
         with:
           context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
-          docker-hub-user: ${{ secrets.DOCKER_HUB_USER }}
+          docker-hub-user: 1maa
           image: ${{ matrix.images[1] }}
 
   tier2:
@@ -41,5 +41,5 @@ jobs:
         with:
           context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
-          docker-hub-user: ${{ secrets.DOCKER_HUB_USER }}
+          docker-hub-user: 1maa
           image: ${{ matrix.images[1] }}
