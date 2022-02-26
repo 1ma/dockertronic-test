@@ -16,3 +16,50 @@ jobs:
         run: docker-compose version
       - name: Attempt logging into Docker Hub
         run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+
+  tier1:
+    name: Build Tier 1 images
+    runs-on: ubuntu-latest
+    needs: [sanity-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        images:
+          - ["alpine", "1maa/alpine:3.15"]
+          - ["alpine", "1maa/alpine:latest"]
+          - ["mysql", "1maa/mysql:8.0"]
+          - ["sqlite", "1maa/sqlite:latest"]
+    env:
+      CONTEXT: ${{ matrix.images[0] }}
+      IMAGE: ${{ matrix.images[1] }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build image
+        run: docker build --cache-from $IMAGE --build-arg BUILDKIT_INLINE_CACHE=1 -t $IMAGE -f $CONTEXT/Dockerfile $CONTEXT
+      - name: Login and Push
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+          docker push $IMAGE
+
+  tier2:
+    name: Build Tier 2 images
+    runs-on: ubuntu-latest
+    needs: [tier1]
+    strategy:
+      fail-fast: false
+      matrix:
+        images:
+          - ["sakila", "1maa/sakila:latest"]
+    env:
+      CONTEXT: ${{ matrix.images[0] }}
+      IMAGE: ${{ matrix.images[1] }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build image
+        run: docker build --cache-from $IMAGE --build-arg BUILDKIT_INLINE_CACHE=1 -t $IMAGE -f $CONTEXT/Dockerfile $CONTEXT
+      - name: Login and Push
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+          docker push $IMAGE
