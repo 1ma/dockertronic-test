@@ -14,7 +14,6 @@ jobs:
         images:
           - ["alpine", "1maa/alpine:3.15"]
           - ["alpine", "1maa/alpine:latest"]
-          - ["bitcoin", "1maa/bitcoind:22.0"]
           - ["mysql", "1maa/mysql:8.0"]
           - ["sqlite", "1maa/sqlite:latest"]
     steps:
