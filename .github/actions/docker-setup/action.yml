@@ -2,17 +2,17 @@ name: Docker Setup
 description: Sets up a Docker builder with inline caching and multiplatorm building capabilities
 
 inputs:
+  context:
+    description: Docker build context
+    required: true
   docker-hub-user:
     description: User for authentication against Docker Hub
     required: true
   docker-hub-pass:
     description: Docker Hub password of the given user
     required: true
-  image:
-    description: Docker image name
-    required: true
-  context:
-    description: Docker build context
+  tags:
+    description: List of docker image names
     required: true
 
 runs:
@@ -26,9 +26,9 @@ runs:
         password: ${{ inputs.docker-hub-pass }}
     - uses: docker/build-push-action@v2
       with:
-        cache-from: type=registry,ref=${{ inputs.image }}
+        cache-from: type=registry,ref=${{ inputs.tags }}
         cache-to: type=inline
         context: ${{ inputs.context }}
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: ${{ inputs.image }}
+        tags: ${{ inputs.tags }}

@@ -12,8 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - ["alpine", "1maa/alpine:3.15"]
-          - ["alpine", "1maa/alpine:latest"]
+          - ["alpine", "1maa/alpine:3.15,1maa/alpine:latest"]
           - ["mysql", "1maa/mysql:8.0"]
           - ["sqlite", "1maa/sqlite:latest"]
     steps:
@@ -23,7 +22,7 @@ jobs:
           context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
           docker-hub-user: 1maa
-          image: ${{ matrix.images[1] }}
+          tags: ${{ matrix.images[1] }}
 
   tier2:
     name: Build Tier 2 images
@@ -41,4 +40,4 @@ jobs:
           context: ${{ matrix.images[0] }}
           docker-hub-pass: ${{ secrets.DOCKER_HUB_PASS }}
           docker-hub-user: 1maa
-          image: ${{ matrix.images[1] }}
+          tags: ${{ matrix.images[1] }}
